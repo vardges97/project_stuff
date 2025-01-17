@@ -1,0 +1,60 @@
+products_responses = {
+  **default_responses,
+  status.HTTP_201_CREATED: {
+    "description": "Produt created successfuly",
+        "content": {
+          "application/json": {
+            "example": {
+              "name": "product",
+              "description": "this product is/consists of etc.",
+              "price": 9.99,
+              "stock": 99,
+              "category": "category",
+              "Immage_url": "www.example.com"
+            }
+          }
+        }
+      }
+    }
+
+products_responses = {
+  **default_responses,
+  status.HTTP_403_FORBIDDEN: {
+    "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "example": {
+              "detail":"Need administrative or vendor access"
+            }
+          }
+        }
+      }
+    },
+
+products_responses = {
+  **default_responses,
+  status.HTTP_404_NOT_FOUND: {
+    "description": "Not Found",
+        "content": {
+          "application/json": {
+            "example": {
+              "detail":"Product not found"
+            }
+          }
+        }
+      }
+    },
+
+products_responses = {
+  **default_responses,
+  status.HTTP_500_INTERNAL_SERVER_ERROR: {
+    "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "example": {
+              "detail":"Something went wrong"
+            }
+          }
+        }
+      }
+    },
