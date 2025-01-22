@@ -1,11 +1,26 @@
 # services-order
 
 @staticmethod
-async def cancel_order(db: AsyncSession, order_id: int, status: str):
+async def cancel_order(db: AsyncSession, order_id: int):
 
-        order = await db.get(Order, order_id)       
+        order = await db.get(Order, order_id)
+        if not order:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Order not found.")
+
+        if status not in OrderStatus.__members__:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid status '{status}'. Valid statuses are: {', '.join([s for s in OrderStatus.__members__])}."
+            )
+
+        if order.status == OrderStatus.SHIPPED and status == OrderStatus.PENDING:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid status transition: cannot go from 'Shipped' to 'Pending'."
+            )
+
         if order.status == Pending:            
-            order.status = status
+            order.status = cancelled
             order.updated_at = datetime.utcnow()            
             await db.commit()
             await db.refresh(order)
