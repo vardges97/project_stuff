@@ -45,6 +45,6 @@ async def Cancel_order(
     current_user=Depends(get_current_user)
 ):
     """
-    Get details of a specific order by its ID.
+    Cancel a specific order by its ID.
     """
-    return await OrderService.cancel_order(db, order_id, current_user.id, current_user.is_admin)
+    return await OrderService.cancel_order(db, order_id, current_user.id)
