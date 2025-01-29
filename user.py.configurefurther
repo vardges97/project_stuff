@@ -1,0 +1,33 @@
+mport json
+from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
+from sqlalchemy.types import TypeDecorator
+from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, Boolean, Enum, JSON
+
+from app.models.base import Base
+from app.schemas.user import Role
+
+class User(Base):
+  __tablename__ = 'users'
+  id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+  username = Column(String(100), nullable=True)
+  phone_number = Column(String(100), nullable=True)
+  name = Column(String(100), nullable=True)
+  surname = Column(String(100), nullable=True)
+  email = Column(String(100), unique=True, nullable=False)
+  password = Column(String(255), nullable=False)
+  role = Column(Enum(Role), nullable=True)
+  image_url = Column(Text, nullable=True) 
+  sensitive_info = Column(JSON, nullable=True)
+  is_active = Column(Boolean, nullable=True, default=True)
+  created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
+  updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now(), nullable=False)
+
+  orders = relationship('Order', back_populates='user')
+  cart_items=relationship('Order', back_populates='user')
+  review = relationship('Review', back_populates='user')
+  payments = relationship('Payment', back_populates='user')
+  wishlist = relationship('Wishlist', back_populates='user')
+  
+  list_of_orders = 
+  
